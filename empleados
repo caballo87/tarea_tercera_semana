@@ -1,0 +1,49 @@
+
+def imprimir_lista(empleados):
+    if not empleados:
+        print("  (sin empleados)")
+        return
+    print(f"  {'ID':<9}{'Apellidos':<30}{'Nombre(s)'}")
+    print("  " + "-" * 55)
+    for e in ordenar(empleados):
+        apellidos = f"{e['apellido_paterno']} {e['apellido_materno']}".strip()
+        print(f"  {e['id']:<9}{apellidos:<30}{e['nombre']}")
+ 
+ 
+def menu():
+    empleados = cargar()
+    print(f"Empleados cargados: {len(empleados)}")
+ 
+    while True:
+        print("\n1) Agregar empleado  2) Ver lista  3) Buscar  4) Guardar y salir")
+        opcion = input("Opción: ").strip()
+ 
+        if opcion == "1":
+            nombre = input("  Nombre(s): ")
+            paterno = input("  Apellido paterno: ")
+            materno = input("  Apellido materno (Enter si no tiene): ")
+            ok, resultado = agregar_empleado(empleados, nombre, paterno, materno)
+            if ok:
+                print(f"  ✅ Agregado: {resultado['id']} - {nombre_completo(resultado)}")
+            else:
+                print(f"  ❌ {resultado}")
+ 
+        elif opcion == "2":
+            imprimir_lista(empleados)
+ 
+        elif opcion == "3":
+            encontrados = buscar(empleados, input("  Buscar: "))
+            imprimir_lista(encontrados)
+ 
+        elif opcion == "4":
+            guardar(empleados)
+            print(f"Guardado en {ARCHIVO}. Hasta luego.")
+            break
+ 
+        else:
+            print("  Opción no válida.")
+ 
+ 
+if __name__ == "__main__":
+    menu()
+ 
